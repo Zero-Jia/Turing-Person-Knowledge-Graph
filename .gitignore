@@ -1,0 +1,14 @@
+# Neo4j
+neo4j/
+*.db
+*.log
+
+# Python
+__pycache__/
+*.pyc
+
+# env
+.env
+
+# node
+node_modules/
