@@ -1,0 +1,19 @@
+id,name,type
+1,Alan Turing,Person
+2,Alonzo Church,Person
+3,John von Neumann,Person
+4,Claude Shannon,Person
+5,Marvin Minsky,Person
+6,London,Place
+7,Maida Vale,Place
+8,Cambridge,Place
+9,Manchester,Place
+10,University of Cambridge,Organization
+11,Princeton University,Organization
+12,University of Manchester,Organization
+13,Bletchley Park,Organization
+14,Turing Machine,Theory
+15,Turing Test,Theory
+16,Computability Theory,Theory
+17,Artificial Intelligence,Theory
+18,Turing Award,Award
