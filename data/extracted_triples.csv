@@ -1,0 +1,25 @@
+head,relation,tail,source_sentence,source_file
+Turing Award,RELATED_TO,Alan Turing,Turing Award is related to Alan Turing.,theories.txt
+Claude Shannon,RELATED_TO,Artificial Intelligence,Claude Shannon is related to Artificial Intelligence.,theories.txt
+Marvin Minsky,RELATED_TO,Artificial Intelligence,Marvin Minsky is related to Artificial Intelligence.,theories.txt
+John von Neumann,RELATED_TO,Computability Theory,John von Neumann is related to Computability Theory.,theories.txt
+Alonzo Church,WORKED_AT,Princeton University,Alonzo Church worked at Princeton University.,theories.txt
+University of Cambridge,LOCATED_IN,Cambridge,University of Cambridge is located in Cambridge.,institutions.txt
+University of Manchester,LOCATED_IN,Manchester,University of Manchester is located in Manchester.,institutions.txt
+Princeton University,LOCATED_IN,Princeton,Princeton University is located in Princeton.,institutions.txt
+Bletchley Park,LOCATED_IN,Bletchley,Bletchley Park is located in Bletchley.,institutions.txt
+Alan Turing,BORN_IN,London,Alan Turing was born in London.,turing_bio.txt
+Alan Turing,BORN_IN,Maida Vale,Alan Turing was born in Maida Vale.,turing_bio.txt
+Alan Turing,STUDIED_AT,University of Cambridge,Alan Turing studied at University of Cambridge.,turing_bio.txt
+Alan Turing,STUDIED_AT,Princeton University,Alan Turing studied at Princeton University.,turing_bio.txt
+Alan Turing,WORKED_AT,University of Manchester,Alan Turing worked at University of Manchester.,turing_bio.txt
+Alan Turing,WORKED_AT,Bletchley Park,Alan Turing worked at Bletchley Park.,turing_bio.txt
+Alan Turing,PROPOSED,Turing Machine,Alan Turing proposed Turing Machine.,turing_bio.txt
+Alan Turing,PROPOSED,Turing Test,Alan Turing proposed Turing Test.,turing_bio.txt
+Alan Turing,INFLUENCED,Artificial Intelligence,Alan Turing influenced Artificial Intelligence.,turing_bio.txt
+阿兰·图灵,BORN_IN,London,阿兰·图灵出生于London,turing_bio.txt
+阿兰·图灵,STUDIED_AT,University of Cambridge,阿兰·图灵就读于University of Cambridge,turing_bio.txt
+图灵,WORKED_AT,University of Manchester,图灵在University of Manchester工作,turing_bio.txt
+图灵,PROPOSED,Turing Machine,图灵提出了Turing Machine,turing_bio.txt
+图灵,PROPOSED,Turing Test,图灵提出了Turing Test,turing_bio.txt
+图灵,INFLUENCED,Artificial Intelligence,图灵影响了Artificial Intelligence,turing_bio.txt

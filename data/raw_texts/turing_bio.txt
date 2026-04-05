@@ -1,0 +1,16 @@
+Alan Turing was born in London.
+Alan Turing was born in Maida Vale.
+Alan Turing studied at University of Cambridge.
+Alan Turing studied at Princeton University.
+Alan Turing worked at University of Manchester.
+Alan Turing worked at Bletchley Park.
+Alan Turing proposed Turing Machine.
+Alan Turing proposed Turing Test.
+Alan Turing influenced Artificial Intelligence.
+
+阿兰·图灵出生于London。
+阿兰·图灵就读于University of Cambridge。
+图灵在University of Manchester工作。
+图灵提出了Turing Machine。
+图灵提出了Turing Test。
+图灵影响了Artificial Intelligence。

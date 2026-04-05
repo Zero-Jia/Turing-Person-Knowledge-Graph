@@ -1,0 +1,19 @@
+start,end,relation
+Turing Award,Alan Turing,RELATED_TO
+Claude Shannon,Artificial Intelligence,RELATED_TO
+Marvin Minsky,Artificial Intelligence,RELATED_TO
+John von Neumann,Computability Theory,RELATED_TO
+Alonzo Church,Princeton University,WORKED_AT
+University of Cambridge,Cambridge,LOCATED_IN
+University of Manchester,Manchester,LOCATED_IN
+Princeton University,Princeton,LOCATED_IN
+Bletchley Park,Bletchley,LOCATED_IN
+Alan Turing,London,BORN_IN
+Alan Turing,Maida Vale,BORN_IN
+Alan Turing,University of Cambridge,STUDIED_AT
+Alan Turing,Princeton University,STUDIED_AT
+Alan Turing,University of Manchester,WORKED_AT
+Alan Turing,Bletchley Park,WORKED_AT
+Alan Turing,Turing Machine,PROPOSED
+Alan Turing,Turing Test,PROPOSED
+Alan Turing,Artificial Intelligence,INFLUENCED

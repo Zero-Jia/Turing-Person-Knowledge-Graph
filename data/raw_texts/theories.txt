@@ -1,0 +1,5 @@
+Turing Award is related to Alan Turing.
+Claude Shannon is related to Artificial Intelligence.
+Marvin Minsky is related to Artificial Intelligence.
+John von Neumann is related to Computability Theory.
+Alonzo Church worked at Princeton University.

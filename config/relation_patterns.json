@@ -1,0 +1,32 @@
+{
+    "patterns": [
+      {
+        "relation": "BORN_IN",
+        "regex": "(?P<head>[A-Za-z·\\u4e00-\\u9fa5\\s]+?)\\s*(?:was born in|出生于)\\s*(?P<tail>[A-Za-z\\u4e00-\\u9fa5\\s\\.]+)"
+      },
+      {
+        "relation": "STUDIED_AT",
+        "regex": "(?P<head>[A-Za-z·\\u4e00-\\u9fa5\\s]+?)\\s*(?:studied at|就读于)\\s*(?P<tail>[A-Za-z\\u4e00-\\u9fa5\\s\\.]+)"
+      },
+      {
+        "relation": "WORKED_AT",
+        "regex": "(?P<head>[A-Za-z·\\u4e00-\\u9fa5\\s]+?)\\s*(?:worked at|在)\\s*(?P<tail>[A-Za-z\\u4e00-\\u9fa5\\s\\.]+?)\\s*(?:工作)?$"
+      },
+      {
+        "relation": "PROPOSED",
+        "regex": "(?P<head>[A-Za-z·\\u4e00-\\u9fa5\\s]+?)\\s*(?:proposed|提出了)\\s*(?P<tail>[A-Za-z\\u4e00-\\u9fa5\\s\\.]+)"
+      },
+      {
+        "relation": "INFLUENCED",
+        "regex": "(?P<head>[A-Za-z·\\u4e00-\\u9fa5\\s]+?)\\s*(?:influenced|影响了)\\s*(?P<tail>[A-Za-z\\u4e00-\\u9fa5\\s\\.]+)"
+      },
+      {
+        "relation": "LOCATED_IN",
+        "regex": "(?P<head>[A-Za-z·\\u4e00-\\u9fa5\\s]+?)\\s*(?:is located in|位于)\\s*(?P<tail>[A-Za-z\\u4e00-\\u9fa5\\s\\.]+)"
+      },
+      {
+        "relation": "RELATED_TO",
+        "regex": "(?P<head>[A-Za-z·\\u4e00-\\u9fa5\\s]+?)\\s*(?:is related to|相关于)\\s*(?P<tail>[A-Za-z\\u4e00-\\u9fa5\\s\\.]+)"
+      }
+    ]
+  }
