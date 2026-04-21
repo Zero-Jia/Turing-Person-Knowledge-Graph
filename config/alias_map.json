@@ -1,37 +1,32 @@
 {
-    "Alan Turing": "Alan Turing",
-    "阿兰·图灵": "Alan Turing",
-    "图灵": "Alan Turing",
-  
-    "University of Cambridge": "University of Cambridge",
-    "Cambridge University": "University of Cambridge",
-  
-    "University of Manchester": "University of Manchester",
-    "Manchester University": "University of Manchester",
-  
-    "Princeton University": "Princeton University",
-  
-    "Turing Machine": "Turing Machine",
-    "图灵机": "Turing Machine",
-  
-    "Turing Test": "Turing Test",
-    "图灵测试": "Turing Test",
-  
-    "Artificial Intelligence": "Artificial Intelligence",
-    "人工智能": "Artificial Intelligence",
-  
-    "London": "London",
-    "Maida Vale": "Maida Vale",
-    "Cambridge": "Cambridge",
-    "Manchester": "Manchester",
-    "Princeton": "Princeton",
-    "Bletchley": "Bletchley",
-  
-    "Turing Award": "Turing Award",
-    "Claude Shannon": "Claude Shannon",
-    "Marvin Minsky": "Marvin Minsky",
-    "John von Neumann": "John von Neumann",
-    "Alonzo Church": "Alonzo Church",
-    "Computability Theory": "Computability Theory",
-    "Bletchley Park": "Bletchley Park"
-  }
+  "Alan Turing": "Alan Turing",
+  "Turing": "Alan Turing",
+  "阿兰·图灵": "Alan Turing",
+  "图灵": "Alan Turing",
+  "Cambridge University": "University of Cambridge",
+  "University of Cambridge": "University of Cambridge",
+  "Manchester University": "University of Manchester",
+  "University of Manchester": "University of Manchester",
+  "Princeton University": "Princeton University",
+  "Cambridge": "Cambridge",
+  "London": "London",
+  "Manchester": "Manchester",
+  "Princeton": "Princeton",
+  "Maida Vale": "Maida Vale",
+  "Bletchley": "Bletchley",
+  "Bletchley Park": "Bletchley Park",
+  "Turing Machine": "Turing Machine",
+  "图灵机": "Turing Machine",
+  "Turing Test": "Turing Test",
+  "图灵测试": "Turing Test",
+  "Artificial Intelligence": "Artificial Intelligence",
+  "人工智能": "Artificial Intelligence",
+  "Computability Theory": "Computability Theory",
+  "可计算理论": "Computability Theory",
+  "Turing Award": "Turing Award",
+  "图灵奖": "Turing Award",
+  "Claude Shannon": "Claude Shannon",
+  "Marvin Minsky": "Marvin Minsky",
+  "John von Neumann": "John von Neumann",
+  "Alonzo Church": "Alonzo Church"
+}

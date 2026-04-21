@@ -2,6 +2,7 @@
 neo4j/
 *.db
 *.log
+*.err
 
 # Python
 __pycache__/
@@ -12,3 +13,4 @@ __pycache__/
 
 # node
 node_modules/
+dist/
