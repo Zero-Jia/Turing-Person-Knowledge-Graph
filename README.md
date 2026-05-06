@@ -1,15 +1,49 @@
 # Turing Person Knowledge Graph
 
-一个基于 Python + CSV + Neo4j 的课程项目，主题是“图灵人物知识图谱”。  
-当前版本在原有手工整理数据的基础上，新增了自动知识抽取、实体类型归一、轻量实体消歧、三元组构建与 Neo4j 写入能力。
+一个围绕 Alan Turing（阿兰·图灵）人物知识构建的轻量级知识图谱项目。项目包含 Python 后端、NLP 抽取流程、CSV 数据层、Neo4j 图数据库导入，以及基于 Vue + Cytoscape 的前端可视化页面。
 
-## 项目目标
+## 项目简介
 
-- 保留原有 `CSV -> Neo4j` 图谱构建流程
-- 支持从自然语言文本中自动抽取知识
-- 对抽取出的实体进行类型映射和语义消歧
-- 将结果构建为限定关系集合内的三元组
-- 使用 `MERGE` 写入 Neo4j，避免重复数据
+本项目的目标是把图灵相关的人物、机构、地点、理论成果和奖项整理成结构化知识，并以三元组形式写入 Neo4j，最后通过 Web 页面展示知识图谱。
+
+当前实现同时支持两类数据来源：
+
+- 手工整理的 CSV 数据：`data/entities.csv`、`data/relations.csv`
+- 从原始文本自动抽取的数据：`data/raw_texts/*.txt` -> `data/entities_auto.csv`、`data/relations_auto.csv`
+
+## 功能特性
+
+- 使用 CSV 管理实体和关系数据。
+- 从英文自然语言文本中识别实体并抽取关系。
+- 支持实体别名归一和轻量级实体消歧。
+- 将手工数据和自动抽取数据合并导入 Neo4j。
+- 使用 `MERGE` 写入节点和关系，减少重复数据。
+- 提供 Flask API：
+  - `POST /extract`：从输入文本抽取知识并可写入 Neo4j。
+  - `GET /api/graph`：从 Neo4j 读取图谱数据。
+- 提供 Vue 前端，用 Cytoscape 展示节点、关系、图例和节点详情。
+
+## 技术栈
+
+后端与数据处理：
+
+- Python 3.10+
+- Flask
+- pandas
+- neo4j Python Driver
+- spaCy（可选，用于增强 NER；未安装模型时会退化为规则识别）
+
+前端：
+
+- Vue 3
+- Vue Router
+- Vite
+- Axios
+- Cytoscape
+
+图数据库：
+
+- Neo4j 5.x
 
 ## 知识图谱模式
 
@@ -17,193 +51,146 @@
 
 | 类型 | 说明 | 示例 |
 | --- | --- | --- |
-| Person | 人物 | Alan Turing |
-| Organization | 机构 | University of Cambridge |
-| Theory | 理论 / 成果 | Turing Machine |
-| Award | 奖项 | Turing Award |
-| Place | 地点 | London |
+| `Person` | 人物 | Alan Turing |
+| `Organization` | 学校、研究机构、工作单位 | University of Cambridge |
+| `Theory` | 理论、成果、领域 | Turing Machine |
+| `Award` | 奖项 | Turing Award |
+| `Place` | 地点 | London |
 
 ### 关系类型
 
-仅允许以下关系类型：
-
-- `BORN_IN`
-- `STUDIED_AT`
-- `WORKED_AT`
-- `PROPOSED`
-- `RELATED_TO`
-- `AWARDED`
-- `LOCATED_IN`
-- `INFLUENCED`
-
-### 三元组示例
-
-```text
-(Alan Turing, BORN_IN, London)
-(Alan Turing, STUDIED_AT, University of Cambridge)
-(Alan Turing, PROPOSED, Turing Machine)
-```
-
-## 当前实现的整体流程
-
-输入文本后，系统按以下流程处理：
-
-```text
-输入文本
--> 实体识别（NER）
--> 实体类型归一
--> 实体消歧（Entity Linking）
--> 关系抽取（限定关系类型）
--> 三元组构建
--> 追加写入 CSV
--> 写入 Neo4j（可选）
-```
+| 关系 | 说明 | 示例 |
+| --- | --- | --- |
+| `BORN_IN` | 出生于 | `(Alan Turing, BORN_IN, London)` |
+| `STUDIED_AT` | 就读于 | `(Alan Turing, STUDIED_AT, University of Cambridge)` |
+| `WORKED_AT` | 工作于 | `(Alan Turing, WORKED_AT, Bletchley Park)` |
+| `PROPOSED` | 提出理论或成果 | `(Alan Turing, PROPOSED, Turing Machine)` |
+| `RELATED_TO` | 相关 | `(Turing Award, RELATED_TO, Alan Turing)` |
+| `AWARDED` | 获得奖项 | `(Person, AWARDED, Award)` |
+| `LOCATED_IN` | 位于 | `(University of Cambridge, LOCATED_IN, Cambridge)` |
+| `INFLUENCED` | 影响 | `(Alan Turing, INFLUENCED, Artificial Intelligence)` |
 
 ## 项目结构
 
 ```text
 Turing-Person-Knowledge-Graph/
-├── app.py
+├── app.py                         # Flask API 服务
+├── requirements.txt               # Python 依赖
 ├── README.md
-├── requirements.txt
 ├── config/
-│   ├── alias_map.json
-│   └── relation_patterns.json
+│   ├── alias_map.json             # 实体别名映射
+│   └── relation_patterns.json     # 关系抽取规则配置
 ├── data/
-│   ├── entities.csv
-│   ├── entities_auto.csv
-│   ├── relations.csv
-│   ├── relations_auto.csv
-│   ├── extracted_triples.csv
-│   ├── normalized_triples.csv
-│   └── raw_texts/
+│   ├── entities.csv               # 手工实体数据
+│   ├── relations.csv              # 手工关系数据
+│   ├── entities_auto.csv          # 自动抽取实体数据
+│   ├── relations_auto.csv         # 自动抽取关系数据
+│   ├── extracted_triples.csv      # 最近抽取出的三元组
+│   ├── normalized_triples.csv     # 归一化三元组
+│   └── raw_texts/                 # 原始文本语料
 ├── docs/
+│   └── schema.md                  # 图谱模式说明
 ├── nlp/
-│   ├── __init__.py
-│   ├── ner.py
-│   ├── entity_linking.py
-│   ├── relation_extraction.py
-│   └── pipeline.py
+│   ├── ner.py                     # 实体识别
+│   ├── entity_linking.py          # 实体链接与消歧
+│   ├── relation_extraction.py     # 关系抽取
+│   └── pipeline.py                # 抽取流程入口
 ├── queries/
-└── scripts/
-    ├── clean_data.py
-    ├── build_graph_csv.py
-    ├── extract_knowledge.py
-    ├── normalize_and_disambiguate.py
-    └── import_to_neo4j.py
+│   └── neo4j_queries.cql          # 示例 Cypher 查询
+├── scripts/
+│   ├── clean_data.py              # CSV 清洗脚本
+│   ├── build_graph_csv.py         # 从三元组构建图谱 CSV
+│   ├── extract_knowledge.py       # 批量文本抽取脚本
+│   ├── normalize_and_disambiguate.py
+│   └── import_to_neo4j.py         # Neo4j 导入脚本
+└── frontend/
+    ├── package.json
+    ├── vite.config.js
+    └── src/
+        ├── api/graph.js
+        ├── views/KnowledgeGraphView.vue
+        └── components/KnowledgeGraph.vue
 ```
 
-## 核心模块说明
+## 处理流程
 
-### `nlp/ner.py`
-
-负责实体识别与类型映射：
-
-- 优先尝试使用 `spaCy`
-- 如果本地没有安装 `spaCy` 或模型，则自动退化为规则识别
-- 类型映射规则：
-  - `PERSON -> Person`
-  - `ORG -> Organization`
-  - `GPE/LOC -> Place`
-  - 包含 `Machine` / `Theory` / `Test` -> `Theory`
-  - 包含 `Award` / `Prize` -> `Award`
-
-### `nlp/entity_linking.py`
-
-负责轻量实体消歧：
-
-- 从 `entities.csv` 和 `entities_auto.csv` 中读取候选实体
-- 结合 `config/alias_map.json` 做别名归一
-- 使用轻量 TF-IDF 向量 + 余弦相似度选择最优候选
-- 若相似度低于阈值，则创建新实体
-
-统一方法：
+自动抽取流程位于 `nlp/pipeline.py`，主入口为：
 
 ```python
-resolve_entity(mention, context) -> entity_name
+extract_kg_from_text(text: str, persist: bool = True, write_neo4j: bool = True)
 ```
 
-### `nlp/relation_extraction.py`
+整体流程：
 
-负责关系抽取：
-
-- 只抽取预定义关系类型
-- 使用规则模板匹配句子中的关系表达
-- 支持简单代词回指，例如 `He proposed ...`
-
-### `nlp/pipeline.py`
-
-统一入口：
-
-```python
-extract_kg_from_text(text: str)
+```text
+输入文本
+-> 句子切分
+-> 实体识别
+-> 实体类型推断
+-> 实体链接与别名归一
+-> 规则关系抽取
+-> 三元组去重
+-> 写入自动 CSV
+-> 可选写入 Neo4j
 ```
-
-该函数负责：
-
-- 实体识别
-- 实体消歧
-- 关系抽取
-- 三元组去重
-- 自动 CSV 追加
-- 可选写入 Neo4j
-
-## 数据文件说明
-
-### 手工数据
-
-- `data/entities.csv`
-- `data/relations.csv`
-
-这两份文件代表原有人工整理的数据。
-
-### 自动抽取数据
-
-- `data/entities_auto.csv`
-- `data/relations_auto.csv`
-
-自动抽取结果会追加到这里，不会破坏原有手工数据。
-
-### 抽取结果
-
-- `data/extracted_triples.csv`
-
-保存最新一次抽取出的三元组。
-
-## Neo4j 写入规则
-
-Neo4j 导入逻辑位于 `scripts/import_to_neo4j.py`，特点如下：
-
-- 同时读取手工 CSV 和自动 CSV
-- 节点使用 `MERGE`
-- 关系使用真实关系类型，例如 `:BORN_IN`、`:PROPOSED`
-- 节点属性包含：
-  - `name`
-  - `type`
-  - `source`
-- 若同名实体同时存在于手工数据和自动数据中，优先保留手工实体信息
 
 ## 安装依赖
 
-推荐 Python 版本：`3.10+`
-
-安装依赖：
+### 1. 安装 Python 依赖
 
 ```bash
 pip install -r requirements.txt
 ```
 
-如果你希望启用 `spaCy` NER，还需要下载模型：
+如果希望启用 spaCy 模型增强实体识别，可以额外安装英文模型：
 
 ```bash
 python -m spacy download en_core_web_sm
 ```
 
-## 如何运行
+### 2. 安装前端依赖
+
+```bash
+cd frontend
+npm install
+```
+
+## Neo4j 配置
+
+后端和导入脚本默认使用以下环境变量：
+
+```text
+NEO4J_URI=bolt://127.0.0.1:7687
+NEO4J_USERNAME=neo4j
+NEO4J_PASSWORD=12345678
+NEO4J_DATABASE=turning-kg
+```
+
+可以根据本地 Neo4j 实例修改环境变量。
+
+Windows PowerShell 示例：
+
+```powershell
+$env:NEO4J_URI="bolt://127.0.0.1:7687"
+$env:NEO4J_USERNAME="neo4j"
+$env:NEO4J_PASSWORD="your_password"
+$env:NEO4J_DATABASE="neo4j"
+```
+
+macOS / Linux 示例：
+
+```bash
+export NEO4J_URI=bolt://127.0.0.1:7687
+export NEO4J_USERNAME=neo4j
+export NEO4J_PASSWORD=your_password
+export NEO4J_DATABASE=neo4j
+```
+
+## 运行项目
 
 ### 1. 从原始文本批量抽取知识
 
-项目会读取 `data/raw_texts/` 下的 `.txt` 文件：
+脚本会读取 `data/raw_texts/` 下的 `.txt` 文件：
 
 ```bash
 python scripts/extract_knowledge.py
@@ -221,174 +208,141 @@ python scripts/extract_knowledge.py
 python scripts/import_to_neo4j.py
 ```
 
-默认环境变量：
+脚本会读取手工 CSV 和自动 CSV，并询问是否清空已有图数据后再导入。
 
-```text
-NEO4J_URI=bolt://127.0.0.1:7687
-NEO4J_USERNAME=neo4j
-NEO4J_PASSWORD=12345678
-NEO4J_DATABASE=turning-kg
-```
+默认导入文件：
+
+- 实体：`data/entities.csv`、`data/entities_auto.csv`
+- 关系：`data/relations.csv`、`data/relations_auto.csv`
 
 也可以通过环境变量覆盖：
 
 ```bash
-set NEO4J_URI=bolt://127.0.0.1:7687
-set NEO4J_USERNAME=neo4j
-set NEO4J_PASSWORD=your_password
-set NEO4J_DATABASE=neo4j
+ENTITY_CSV_FILES=data/entities.csv,data/entities_auto.csv
+RELATION_CSV_FILES=data/relations.csv,data/relations_auto.csv
 ```
 
-### 3. 启动 API
+### 3. 启动后端 API
 
 ```bash
 python app.py
 ```
 
-服务启动后可访问：
+默认地址：
 
 ```text
-POST http://127.0.0.1:5000/extract
+http://127.0.0.1:5000
+```
+
+### 4. 启动前端页面
+
+```bash
+cd frontend
+npm run dev
+```
+
+默认地址：
+
+```text
+http://127.0.0.1:5173
+```
+
+如果前端和后端不在同一地址，可以设置：
+
+```bash
+VITE_API_BASE_URL=http://127.0.0.1:5000
 ```
 
 ## API 说明
 
 ### `POST /extract`
 
-请求体：
+从请求文本中抽取实体和三元组，并尝试写入 Neo4j。
 
-```json
-{
-  "text": "Alan Turing was born in London and studied at Cambridge University. He proposed the Turing Machine."
-}
+请求示例：
+
+```bash
+curl -X POST http://127.0.0.1:5000/extract \
+  -H "Content-Type: application/json" \
+  -d "{\"text\":\"Alan Turing was born in London. He proposed the Turing Machine.\"}"
 ```
 
-返回示例：
+响应字段：
+
+- `entities`：抽取和归一后的实体列表。
+- `triples`：三元组列表。
+- `neo4j_written`：是否成功写入 Neo4j。
+- `warning`：Neo4j 写入失败时的错误信息。
+
+### `GET /api/graph`
+
+从 Neo4j 读取前端可视化所需的节点和边。
+
+响应示例：
 
 ```json
 {
-  "entities": [
+  "nodes": [
     {
-      "name": "Alan Turing",
+      "id": "1",
+      "label": "Alan Turing",
       "type": "Person",
-      "source": "manual"
-    },
-    {
-      "name": "London",
-      "type": "Place",
-      "source": "manual"
-    },
-    {
-      "name": "University of Cambridge",
-      "type": "Organization",
-      "source": "manual"
-    },
-    {
-      "name": "Turing Machine",
-      "type": "Theory",
-      "source": "manual"
+      "properties": {
+        "name": "Alan Turing",
+        "type": "Person"
+      }
     }
   ],
-  "triples": [
-    ["Alan Turing", "BORN_IN", "London"],
-    ["Alan Turing", "PROPOSED", "Turing Machine"],
-    ["Alan Turing", "STUDIED_AT", "University of Cambridge"]
-  ],
-  "neo4j_written": true
+  "edges": [
+    {
+      "source": "1",
+      "target": "2",
+      "label": "BORN_IN"
+    }
+  ]
 }
 ```
 
-## Python 调用示例
+## 数据文件说明
 
-```python
-from nlp.pipeline import extract_kg_from_text
+| 文件 | 说明 |
+| --- | --- |
+| `data/entities.csv` | 手工维护的实体表 |
+| `data/relations.csv` | 手工维护的关系表 |
+| `data/entities_auto.csv` | 自动抽取生成的实体表 |
+| `data/relations_auto.csv` | 自动抽取生成的关系表 |
+| `data/extracted_triples.csv` | 最近一次抽取结果 |
+| `data/normalized_triples.csv` | 归一化后的三元组数据 |
+| `data/raw_texts/*.txt` | 用于抽取的原始文本 |
 
-text = (
-    "Alan Turing was born in London and studied at Cambridge University. "
-    "He proposed the Turing Machine."
-)
+## 示例 Cypher 查询
 
-result = extract_kg_from_text(text, persist=True, write_neo4j=False)
+查看所有关系：
 
-print(result["entities"])
-print(result["triples"])
+```cypher
+MATCH (a)-[r]->(b)
+RETURN a, r, b
+LIMIT 50;
 ```
 
-## 测试示例文本
-
-你可以直接使用下面这段文本测试：
-
-```text
-Alan Turing was born in London and studied at Cambridge University.
-He proposed the Turing Machine.
-```
-
-预期抽取结果：
-
-实体：
-
-- `Alan Turing` -> `Person`
-- `London` -> `Place`
-- `University of Cambridge` -> `Organization`
-- `Turing Machine` -> `Theory`
-
-三元组：
-
-- `(Alan Turing, BORN_IN, London)`
-- `(Alan Turing, STUDIED_AT, University of Cambridge)`
-- `(Alan Turing, PROPOSED, Turing Machine)`
-
-## 常用 Cypher 查询
-
-查询 Alan Turing 的全部关系：
+查看 Alan Turing 的直接关系：
 
 ```cypher
 MATCH (a:Entity {name: "Alan Turing"})-[r]->(b)
-RETURN a, r, b
+RETURN a, r, b;
 ```
 
-查询 Alan Turing 提出的理论：
+查看 Alan Turing 提出的理论或成果：
 
 ```cypher
-MATCH (:Entity {name: "Alan Turing"})-[:PROPOSED]->(b)
-RETURN b
+MATCH (a:Entity {name: "Alan Turing"})-[r:PROPOSED]->(b)
+RETURN a, r, b;
 ```
 
-查询 Alan Turing 的教育和工作机构：
+## 开发备注
 
-```cypher
-MATCH (:Entity {name: "Alan Turing"})-[:STUDIED_AT|WORKED_AT]->(b)
-RETURN b
-```
-
-查询机构所在地点：
-
-```cypher
-MATCH (a:Entity)-[:LOCATED_IN]->(b:Entity)
-RETURN a.name, b.name
-```
-
-## 已完成的增强点
-
-- 保留原有 CSV 与 Neo4j 项目结构
-- 新增自动知识抽取流水线
-- 新增轻量实体消歧
-- 新增自动 CSV 追加逻辑
-- Neo4j 导入改为 `MERGE` 去重
-- Neo4j 节点新增 `source` 属性
-- 新增 `POST /extract` API
-
-## 注意事项
-
-- 当前关系抽取基于规则模板，不是深度学习关系抽取模型
-- 当前实体消歧为轻量实现，适合课程项目和中小规模示例
-- 若未安装 `spaCy`，项目仍可运行，但 NER 会退化为规则识别
-- 若未安装 `neo4j` Python 驱动，文本抽取和 CSV 生成仍可运行，但不会写入 Neo4j
-
-## 后续可扩展方向
-
-- 接入 `sentence-transformers` 做更强的实体链接
-- 增加中文 NER 模型
-- 增加更多关系模板
-- 支持批量 API 调用
-- 增加前端图谱可视化页面
+- `nlp/ner.py` 会优先尝试加载 spaCy 模型；如果不可用，会使用规则识别。
+- `nlp/entity_linking.py` 会读取 `config/alias_map.json` 做别名归一，并用轻量 TF-IDF 相似度选择候选实体。
+- `scripts/import_to_neo4j.py` 会创建 `Entity.name` 唯一约束，并按真实关系类型写入 Neo4j，例如 `:BORN_IN`、`:PROPOSED`。
+- 前端图谱数据来自 `/api/graph`，节点颜色按 `type` 区分，点击节点可查看属性详情。
+- 仓库中部分旧脚本和文档曾出现中文编码乱码；README 已整理为 UTF-8 中文版本。
